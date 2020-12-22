@@ -1,0 +1,4 @@
+---
+state: "present"
+
+backend_config: "/mnt/c/Users/deep/Documents/GitHub/Verana/config.tf" 

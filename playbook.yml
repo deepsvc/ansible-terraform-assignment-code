@@ -1,0 +1,89 @@
+---
+- name: 
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: print welcome message
+    debug: 
+      msg: Welcome to Ansible Playbook to Deploy Terraform Project
+
+- name: check for terraform installation | install if not found
+  hosts: localhost
+
+  tasks:
+  - name: check if terraform exists
+    shell: terraform version
+    register: version
+
+  - name: print the terraform version if terraform exists
+    debug: var=version.stdout_lines
+    when: version is succeeded
+
+  - name: install terraform
+    include_role:
+      name: terraform
+      tasks_from: main
+    when: version is failed
+
+  - name: Include Variable Files
+    include_vars:
+      dir: vars
+
+- name: Deploy Terraform Project
+  hosts: localhost
+  vars_prompt:
+    - name: doc_name
+      prompt: Enter a name for Docker Image (Ignore to use random name)
+      private: no
+
+    # - name: backend_config
+    #   prompt: Enter Path of Backend Config File
+    #   private: no
+
+
+  tasks:
+
+  - name: Terraform Init
+    shell: |
+      cd terraform-docker-demo
+      terraform init -backend-config={{ backend_config }}
+    tags:
+      - init
+
+  - name: Terraform Deploy Project
+
+    terraform:
+      project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
+      state: present
+      variables:
+        doc_name: "{{ doc_name }}"
+    tags:
+      - deploy
+
+    
+  - name: Terraform Deploy Planned Project
+    terraform:
+      project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
+      plan_file: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo/project.tfplan'
+      state: planned
+    tags:
+      - plan
+
+  - debug: var=plan_output.stdout_lines
+    tags:
+      - plan
+
+  - name: Terraform Deploy Planned Project
+    terraform:
+      project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
+      plan_file: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo/project.tfplan'
+      state: present
+    tags:
+      - deploy_planned
+  
+  - name: Terraform Destroy Project
+    terraform:
+      project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
+      state: absent
+    tags:
+      - absent
