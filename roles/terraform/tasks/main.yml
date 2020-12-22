@@ -9,3 +9,4 @@
     src: https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip
     dest: /usr/bin
     remote_src: True
+  become: true
