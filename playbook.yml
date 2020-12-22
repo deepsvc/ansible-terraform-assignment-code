@@ -52,7 +52,7 @@
 
   - name: Terraform Deploy Project
     terraform:
-      project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
+      project_path: "{{ project_path }}"
       state: present
       variables:
         doc_name: "{{ doc_name }}"
@@ -62,8 +62,8 @@
     
   - name: Terraform Deploy Planned Project
     terraform:
-      project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
-      plan_file: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo/project.tfplan'
+      project_path: "{{ project_path }}"
+      plan_file: "{{ project_path }}/project.tfplan"
       state: planned
     tags:
       - plan
@@ -74,15 +74,15 @@
 
   - name: Terraform Deploy Planned Project
     terraform:
-      project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
-      plan_file: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo/project.tfplan'
+      project_path: "{{ project_path }}"
+      plan_file: "{{ project_path }}/project.tfplan"
       state: present
     tags:
       - deploy_planned
   
   - name: Terraform Destroy Project
     terraform:
-      project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
+      project_path: "{{ project_path }}"
       state: absent
     tags:
       - absent
