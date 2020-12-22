@@ -7,35 +7,31 @@
     debug: 
       msg: Welcome to Ansible Playbook to Deploy Terraform Project
 
-- name: check for terraform installation | install if not found
-  hosts: localhost
+# - name: check for terraform installation | install if not found
+#   hosts: localhost
 
-  tasks:
-  - name: check if terraform exists
-    shell: terraform version
-    register: version
-    ignore_errors: yes
+#   tasks:
+#   - name: check if terraform exists
+#     shell: terraform version
+#     register: version
+#     ignore_errors: yes
 
-  - name: print the terraform version if terraform exists
-    debug: var=version.stdout_lines
-    when: version is succeeded
+#   - name: print the terraform version if terraform exists
+#     debug: var=version.stdout_lines
+#     when: version is succeeded
 
-  - name: install terraform
-    include_role:
-      name: terraform
-      tasks_from: main
-    when: version is failed
-
-  - name: Include Variable Files
-    include_vars:
-      dir: vars
+#   - name: install terraform
+#     include_role:
+#       name: terraform
+#       tasks_from: main
+#     when: version is failed
 
 - name: Deploy Terraform Project
   hosts: localhost
-  vars_prompt:
-    - name: doc_name
-      prompt: Enter a name for Docker Image (Ignore to use random name)
-      private: no
+  # vars_prompt:
+  #   - name: doc_name
+  #     prompt: Enter a name for Docker Image (Ignore to use random name)
+  #     private: no
 
     # - name: backend_config
     #   prompt: Enter Path of Backend Config File
@@ -43,6 +39,10 @@
 
 
   tasks:
+
+  - name: Include Variable Files
+    include_vars:
+      dir: vars
 
   - name: Terraform Init
     shell: |
