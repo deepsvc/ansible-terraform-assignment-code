@@ -51,7 +51,6 @@
       - init
 
   - name: Terraform Deploy Project
-
     terraform:
       project_path: '/mnt/c/Users/deep/Documents/GitHub/Verana/terraform-docker-demo'
       state: present
