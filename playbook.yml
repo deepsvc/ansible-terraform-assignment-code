@@ -14,6 +14,7 @@
   - name: check if terraform exists
     shell: terraform version
     register: version
+    ignore_errors: yes
 
   - name: print the terraform version if terraform exists
     debug: var=version.stdout_lines
