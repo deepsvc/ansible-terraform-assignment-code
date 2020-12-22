@@ -61,11 +61,13 @@
       - deploy
 
     
-  - name: Terraform Deploy Planned Project
+  - name: Terraform Plan Project
     terraform:
       project_path: "{{ project_path }}"
       plan_file: "{{ project_path }}/project.tfplan"
       state: planned
+      variables:
+        doc_name: "{{ doc_name }}"
     tags:
       - plan
 
@@ -78,6 +80,8 @@
       project_path: "{{ project_path }}"
       plan_file: "{{ project_path }}/project.tfplan"
       state: present
+      variables:
+        doc_name: "{{ doc_name }}"
     tags:
       - deploy_planned
   
